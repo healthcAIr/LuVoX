@@ -1,0 +1,8 @@
+matplotlib
+scikit-image
+opencv-python
+scipy
+numpy
+pydicom>=1.0.0
+tqdm
+pandas>=0.22.0
