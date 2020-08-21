@@ -61,9 +61,9 @@ def preprocessing(voxels, spacing):
 
         # compute contours
         if isopencv2:
-            contours, hierarchy = cv2.findContours(otsu.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
-        else:
             _, contours, hierarchy = cv2.findContours(otsu.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+        else:
+            contours, hierarchy = cv2.findContours(otsu.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
 
         # compute max contour area id
         areas = []
