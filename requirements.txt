@@ -1,6 +1,6 @@
 matplotlib
 scikit-image
-opencv-python
+opencv-python>=3.2
 scipy
 numpy
 pydicom>=1.0.0
