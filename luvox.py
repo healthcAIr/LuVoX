@@ -527,6 +527,8 @@ if __name__ == "__main__":
                         help="Show verbose output.")
     parser.add_argument("--plot",  default=False, action="store_true",
                         help="Save plots.")
+    parser.add_argument("--plot3d",  default=False, action="store_true",
+                        help="Save 3D plots.")
     parser.add_argument("--csvformat", default=False, action="store_true",
                         help="Enable CSV output format.")
     parser.add_argument("--dry", default=False, action="store_true",
