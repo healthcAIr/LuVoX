@@ -370,68 +370,69 @@ def run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_
         luvo_time = time.time() - series_start_time
         plot_start_time = time.time()
 
-        # create a pdf for this series
-        with PdfPages("{}.pdf".format(prefix / study_uid / img.SeriesInstanceUID)) as pdf:
-            # write meta data
-            plt.figure(figsize=(8, 6))
-            plt.title("LuVoX - Fully automated lung volumetry from CT scans.")
-            res_text = "StudyUID: {}\n SeriesUID: {}\n PatientSex: {}\n PatientAge: {}\n AcquisitionDate: {}\n" \
-                       " RAW-Volume: {}\n Avg.HU: {}\n Load-time: {}\n LuVoX-time: {}".format(
-                img.StudyInstanceUID, img.SeriesInstanceUID,
-                img.PatientSex, int(img.PatientAge[:-1]), img.AcquisitionDate,
-                raw_volume, raw_avg_hu,
-                tbz_time, luvo_time
-            )
-            plt.text(0.5, 0.5, res_text, horizontalalignment="center", verticalalignment="center")
-            plt.axis("off")
-            pdf.savefig()
-            plt.close()
-
-            # plot RAW data
-            twodplotz = plotting.plot_2d(clipped_voxels)
-            for desc in twodplotz:
+        if kwargs.get("plot", False):
+            # create a pdf for this series
+            with PdfPages("{}.pdf".format(prefix / study_uid / img.SeriesInstanceUID)) as pdf:
+                # write meta data
                 plt.figure(figsize=(8, 6))
-                plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
-                plt.title("RAW-{}".format(desc))
-                plot = twodplotz[desc]
-                plt.imshow(plot)
-                pdf.savefig()
-                plt.close()
-
-            # plot preprocessed voxels
-            twodplotz = plotting.plot_2d(case_voxels)
-            for desc in twodplotz:
-                plt.figure(figsize=(8, 6))
-                plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
-                plt.title("Preprocessed-{}".format(desc))
-                plot = twodplotz[desc]
-                plt.imshow(plot)
-                pdf.savefig()
-                plt.close()
-
-            # plot lung mask
-            twodplotz = plotting.plot_2d(lung_mask)
-            for desc in twodplotz:
-                plt.figure(figsize=(8, 6))
-                plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
-                plt.title("Mask-{}".format(desc))
-                plot = twodplotz[desc]
-                plt.imshow(plot)
-                pdf.savefig()
-                plt.close()
-
-            overlays = plotting.create_overlays(clipped_voxels, lung_mask)
-            for idx, ov in enumerate(overlays):
-                plt.figure(figsize=(8, 6))
-                plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
-                plt.title("Overlay-{}".format(idx))
-                plt.imshow(ov)
-                pdf.savefig()
-                plt.close()
-                matplotlib.pyplot.imsave(
-                    str(prefix / study_uid / "{}-{}-{}.{}".format(img.SeriesInstanceUID, "overlay", idx, "png")),
-                    ov
+                plt.title("LuVoX - Fully automated lung volumetry from CT scans.")
+                res_text = "StudyUID: {}\n SeriesUID: {}\n PatientSex: {}\n PatientAge: {}\n AcquisitionDate: {}\n" \
+                           " RAW-Volume: {}\n Avg.HU: {}\n Load-time: {}\n LuVoX-time: {}".format(
+                    img.StudyInstanceUID, img.SeriesInstanceUID,
+                    img.PatientSex, int(img.PatientAge[:-1]), img.AcquisitionDate,
+                    raw_volume, raw_avg_hu,
+                    tbz_time, luvo_time
                 )
+                plt.text(0.5, 0.5, res_text, horizontalalignment="center", verticalalignment="center")
+                plt.axis("off")
+                pdf.savefig()
+                plt.close()
+
+                # plot RAW data
+                twodplotz = plotting.plot_2d(clipped_voxels)
+                for desc in twodplotz:
+                    plt.figure(figsize=(8, 6))
+                    plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
+                    plt.title("RAW-{}".format(desc))
+                    plot = twodplotz[desc]
+                    plt.imshow(plot)
+                    pdf.savefig()
+                    plt.close()
+
+                # plot preprocessed voxels
+                twodplotz = plotting.plot_2d(case_voxels)
+                for desc in twodplotz:
+                    plt.figure(figsize=(8, 6))
+                    plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
+                    plt.title("Preprocessed-{}".format(desc))
+                    plot = twodplotz[desc]
+                    plt.imshow(plot)
+                    pdf.savefig()
+                    plt.close()
+
+                # plot lung mask
+                twodplotz = plotting.plot_2d(lung_mask)
+                for desc in twodplotz:
+                    plt.figure(figsize=(8, 6))
+                    plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
+                    plt.title("Mask-{}".format(desc))
+                    plot = twodplotz[desc]
+                    plt.imshow(plot)
+                    pdf.savefig()
+                    plt.close()
+
+                overlays = plotting.create_overlays(clipped_voxels, lung_mask)
+                for idx, ov in enumerate(overlays):
+                    plt.figure(figsize=(8, 6))
+                    plt.suptitle("SeriesInstanceUID {}".format(img.SeriesInstanceUID))
+                    plt.title("Overlay-{}".format(idx))
+                    plt.imshow(ov)
+                    pdf.savefig()
+                    plt.close()
+                    matplotlib.pyplot.imsave(
+                        str(prefix / study_uid / "{}-{}-{}.{}".format(img.SeriesInstanceUID, "overlay", idx, "png")),
+                        ov
+                    )
 
         plot_time = time.time() - plot_start_time
         result = "{},{},{},{},{},{},{},{},{},{}".format(
