@@ -528,7 +528,7 @@ if __name__ == "__main__":
     parser.add_argument("--plot",  default=False, action="store_true",
                         help="Save plots.")
     parser.add_argument("--csvformat", default=False, action="store_true",
-                        help="Save plots.")
+                        help="Enable CSV output format.")
     parser.add_argument("--dry", default=False, action="store_true",
                         help="Dry run.")
     parser.add_argument("input", type=str,
