@@ -123,7 +123,7 @@ def crop_border(pixels, tolerance=0):
     )]
 
 
-def execute_directory(input, directory, prefix, csvformat, outfile, output, verbose, debug, seriesiuid):
+def execute_directory(input, directory, prefix, csvformat, outfile, output, verbose, debug, seriesiuid, **kwargs):
     logstr = []
     logger = IOBuffer()
 
@@ -168,7 +168,7 @@ def execute_directory(input, directory, prefix, csvformat, outfile, output, verb
     # compute time for decompressing
     read_time = time.time() - read_start_time
 
-    run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, read_time, verbose)
+    run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, read_time, verbose, **kwargs)
 
     if verbose:
         logstr.append("--- avg. {} seconds ---".format(1.0 * (time.time() - read_start_time) / np.max([1, len(case)])))
@@ -178,7 +178,7 @@ def execute_directory(input, directory, prefix, csvformat, outfile, output, verb
     return logger
 
 
-def execute_archive(fp, directory, prefix, csvformat, outfile, output, verbose, debug, seriesiuid, dry=False):
+def execute_archive(fp, directory, prefix, csvformat, outfile, output, verbose, debug, seriesiuid, dry=False, **kwargs):
     logstr = []
     logger = IOBuffer()
 
@@ -225,7 +225,7 @@ def execute_archive(fp, directory, prefix, csvformat, outfile, output, verbose, 
     # compute time for decompressing
     tbz_time = time.time() - tbz_start_time
 
-    run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_time, verbose, dry)
+    run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_time, verbose, dry, kwargs)
 
     if verbose:
         logstr.append("--- avg. {} seconds ---".format(1.0 * (time.time() - tbz_start_time) / np.max([1, len(case)])))
@@ -235,7 +235,7 @@ def execute_archive(fp, directory, prefix, csvformat, outfile, output, verbose, 
     return logger
 
 
-def run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_time, verbose, dry=False):
+def run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_time, verbose, dry=False, **kwargs):
     # iterate over all series in the study
     for series in case:
         series_start_time = time.time()
@@ -501,7 +501,8 @@ def process_single_folder(input, prefix, outfile, args):
                              prefix=prefix, directory=args.input,
                              csvformat=args.csvformat, outfile=outfile,
                              output=args.output, verbose=args.verbose,
-                             debug=args.debug, seriesiuid=args.seriesiuid)
+                             debug=args.debug, seriesiuid=args.seriesiuid,
+                             plot=args.plot, plot3d=args.plot3d)
     _logs.append(_log)
     return _logs
 
