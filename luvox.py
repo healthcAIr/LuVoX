@@ -434,6 +434,12 @@ def run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_
                         ov
                     )
 
+        # create a 3D for this series
+        if kwargs.get("plot3d", False):
+            plotting.plot_3d(lung_mask, desc="LungMask",
+                             StudyInstanceUID=img.StudyInstanceUID, SeriesInstanceUID=img.SeriesInstanceUID)
+
+        # end plot time
         plot_time = time.time() - plot_start_time
         result = "{},{},{},{},{},{},{},{},{},{}".format(
             suid, img.SeriesInstanceUID,
