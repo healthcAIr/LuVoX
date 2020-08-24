@@ -16,7 +16,8 @@ def plot_3d(image, desc, prefixpath="", threshold=-300, show=False,
     # so the head of the patient would be at the top facing the camera
     p = image.transpose(2, 1, 0)
 
-    verts, faces, normals, values = measure.marching_cubes(p, threshold)
+    hu_to_8bit = int(255. * (threshold + 1024.) / 4095.)
+    verts, faces, normals, values = measure.marching_cubes(p, hu_to_8bit)
 
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111, projection='3d')
