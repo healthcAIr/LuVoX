@@ -360,7 +360,7 @@ def run_on_case(case, logstr, outfile, prefix, seriesiuid, study_uid, suid, tbz_
             logstr.append("Voxel volume is {}".format(voxelvol))
 
         mask_sum = np.sum(lung_mask.astype(np.bool))
-        raw_volume = mask_sum * voxelvol * 1e-6  # convert to L (from ml)
+        raw_volume = mask_sum * voxelvol * 1e-6  # convert to Liter (from Milliliter)
         raw_avg_hu = 4095.0 * np.mean(case_voxels[lung_mask > 0]) / 255.0 - 1024.0
 
         if verbose:
