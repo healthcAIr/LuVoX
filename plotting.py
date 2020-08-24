@@ -52,7 +52,7 @@ def plot_2d(voxels):
     }
 
 
-def create_overlays(clipped_voxels, lung_mask, alpha=0.2, imagage_count=5):
+def create_overlays(clipped_voxels, lung_mask, alpha=0.2, image_count=5):
     overlays = []
     for idx, (hu, mask) in enumerate(zip(clipped_voxels, lung_mask)):
         b_mask = mask.astype(np.bool)
@@ -65,6 +65,6 @@ def create_overlays(clipped_voxels, lung_mask, alpha=0.2, imagage_count=5):
             cv2.addWeighted(overlay, alpha, img, 1 - alpha, 0, img)
             overlays.append(img)
 
-    ls = list(np.linspace(0, len(overlays), num=imagage_count + 2, dtype=np.int32, endpoint=True)[1:-1])
+    ls = list(np.linspace(0, len(overlays), num=image_count + 2, dtype=np.int32, endpoint=True)[1:-1])
     overlays = [overlays[idx] for idx in ls]
     return overlays
